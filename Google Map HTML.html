@@ -11,21 +11,12 @@
         padding: 0;
       }
       #map {
-        height: 100%;
+        height: 500px;
+        width: 100%;
       }
     </style>
-    <script>
-      // Declare initMap globally BEFORE Google Maps loads
-      window.initMap = function () {
-        map = new google.maps.Map(document.getElementById("map"), {
-          zoom: 5,
-          center: { lat: 39.8283, lng: -98.5795 } // Center of USA
-        });
-        infoWindow = new google.maps.InfoWindow();
-        loadMapData();
-        setInterval(loadMapData, 300000); // Refresh every 5 minutes
-      };
 
+    <script>
       let map;
       let infoWindow;
       let markers = [];
@@ -96,7 +87,26 @@
           console.error("Map load failed:", error);
         }
       }
+
+      // Make initMap globally available
+      window.initMap = function () {
+        console.log("initMap called");
+        const mapDiv = document.getElementById("map");
+        if (!mapDiv) {
+          console.error("Map div not found");
+          return;
+        }
+
+        map = new google.maps.Map(mapDiv, {
+          zoom: 5,
+          center: { lat: 39.8283, lng: -98.5795 } // Center of USA
+        });
+        infoWindow = new google.maps.InfoWindow();
+        loadMapData();
+        setInterval(loadMapData, 300000); // Refresh every 5 minutes
+      };
     </script>
+
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXw6K-8U1ji11ZoVJXxsXfYYrPpRHJknM&callback=initMap"
       defer
